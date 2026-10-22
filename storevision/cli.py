@@ -74,9 +74,16 @@ def main():
     p_audit.add_argument("--output-dir", "-o", default="./out", help="Output directory for rectified assets")
     p_audit.add_argument("--category", "-c", default="Retail Store", help="Business category (e.g. Pharmacy, Dental Clinic, Cafe)")
 
+    p_serve = subparsers.add_parser("serve", help="Start local StoreVision HTTP server for live scorecard viewing")
+    p_serve.add_argument("--port", "-p", type=int, default=8080, help="Port to listen on (default: 8080)")
+    p_serve.add_argument("--host", default="127.0.0.1", help="Host interface (default: 127.0.0.1)")
+
     args = parser.parse_args()
     if args.command == "audit":
         run_audit(args.input, args.output_dir, args.category)
+    elif args.command == "serve":
+        from .server import run_server
+        run_server(args.port, args.host)
 
 
 if __name__ == "__main__":
