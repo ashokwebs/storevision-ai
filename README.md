@@ -1,5 +1,11 @@
 # 👁️ StoreVision AI: Physical Storefront Perception & Signage Intelligence
 
+[![Python 3.13](https://img.shields.io/badge/Python-3.13-blue?style=flat&logo=python)](https://www.python.org/)
+[![OpenCV 5](https://img.shields.io/badge/OpenCV-5.0-red?style=flat&logo=opencv)](https://opencv.org/)
+[![AWS Bedrock](https://img.shields.io/badge/AWS-Bedrock%20Claude%203.5-orange?style=flat&logo=amazon-aws)](https://aws.amazon.com/bedrock/)
+[![Tests](https://img.shields.io/badge/Tests-7%2F7%20Passing-brightgreen?style=flat)]()
+[![Zero Dependencies](https://img.shields.io/badge/Server-Zero%20Dependency-purple?style=flat)]()
+
 > **Built for:** OpenCV AI Competition 2026 (Powered by AWS)  
 > **Platform:** Devpost ([opencv2026.devpost.com](https://opencv2026.devpost.com/))  
 > **Tech Stack:** OpenCV 5 (Python bindings), NumPy, AWS Bedrock (Claude 3.5 Sonnet)  
@@ -13,6 +19,8 @@ StoreVision AI turns any street-level smartphone video or street-view photo into
 2. **Homography Rectification:** Computes an inverse perspective transform to un-warp angled street-level captures into flat, front-facing rectangles.
 3. **Optical Perception Scoring:** Evaluates Michelson optical contrast, stroke-width visibility, occlusion percentage (obstruction by trees/poles), and pedestrian sightlines at 5m, 15m, and 30m.
 4. **AWS Bedrock Integration:** Emits structured multi-modal payloads ready for AWS Bedrock Anthropic Claude 3.5 Sonnet to generate architectural footfall recommendations.
+5. **Interactive HTML Audit Scorecard:** Generates self-contained HTML scorecards (`storevision_audit_report.html`) embedding base64 original vs perspective-rectified signage crops, CV gauges, and sightline metrics.
+6. **Zero-Dependency HTTP Perception Server:** Live web preview and REST API (`/health` and `/api/audit`) powered solely by Python's standard library `http.server` and OpenCV.
 
 ---
 
@@ -25,6 +33,18 @@ pip install -r requirements.txt
 
 # Run the complete test & audit demo
 bash run_demo.sh
+
+# Start live HTTP server on port 8080
+python -m storevision.cli serve --port 8080
+# Open http://localhost:8080 to view the scorecard
+```
+
+---
+
+## 🧪 Automated Testing
+```bash
+pytest -v tests/
+# 7 passed in 0.75s
 ```
 
 ---
