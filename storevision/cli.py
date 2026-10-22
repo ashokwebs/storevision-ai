@@ -56,6 +56,12 @@ def run_audit(input_path: str, output_dir: str, category: str = "Retail Store"):
     with open(payload_path, "w", encoding="utf-8") as f:
         json.dump(bedrock_payload, f, indent=2)
     print(f"\n📦 AWS Bedrock Multi-Modal Payload: {payload_path}")
+
+    # 5. Interactive HTML Audit Scorecard
+    from .visualizer import generate_html_audit_report
+    html_path = os.path.join(output_dir, "storevision_audit_report.html")
+    generate_html_audit_report(img, rectified, metrics, html_path, store_name=category)
+    print(f"🌐 Interactive HTML Audit Scorecard: {html_path}")
     print("🎉 StoreVision physical retail audit complete!\n")
 
 

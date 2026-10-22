@@ -54,3 +54,27 @@ def test_aws_bedrock_prompt_synthesis():
     payload = build_bedrock_prompt(metrics, business_category="Pharmacy")
     assert payload["modelId"] == "anthropic.claude-3-5-sonnet-20241022-v2:0"
     assert "Visibility Index: 78/100" in payload["body"]["messages"][0]["content"][0]["text"]
+
+
+def test_html_audit_report_generation(tmp_path):
+    from storevision.visualizer import generate_html_audit_report
+
+    orig = np.zeros((100, 100, 3), dtype=np.uint8)
+    rect = np.ones((100, 100, 3), dtype=np.uint8) * 255
+    metrics = VisibilityScore(
+        overall_score=85,
+        contrast_ratio=0.88,
+        occlusion_pct=0.0,
+        legibility_5m=True,
+        legibility_15m=True,
+        legibility_30m=True,
+        estimated_letter_height_px=65,
+        recommendations=["Excellent signage contrast."]
+    )
+    out_html = tmp_path / "report.html"
+    res = generate_html_audit_report(orig, rect, metrics, str(out_html))
+    assert out_html.exists()
+    content = out_html.read_text(encoding="utf-8")
+    assert "StoreVision AI · Physical Perception Audit" in content
+    assert "85/100" in content
+    assert "Michelson Contrast" in content
